@@ -5,11 +5,10 @@ var socketio = require('socket.io');
 
 var app = http.createServer(function (request, response) {
     //console.log('request starting...');
-
     var filePath = 'assets' + request.url;
     //console.log(filePath);
-    if (filePath == './')
-        filePath = './index.html';
+    if (filePath == 'assets/')
+        filePath = 'assets/index.html';
 
     var extname = path.extname(filePath);
     var contentType = 'text/html';
