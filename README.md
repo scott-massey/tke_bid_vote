@@ -13,7 +13,8 @@ Limitations:
 - No login information gets stored, so refreshing the page causes a sign-out.
 
 To-Do:
-- Find a way to keep the website up 24/7.
 - Add user support (using a database)
+- Restyle website to look more professional. (Color palette change?)
 - Store user info using a cookie or session variable, so user stays signed in when they refresh the page.
+- Find a way to keep the website up 24/7.
 - Add support for multiple "rooms", i.e. multiple instances of the app running at once.
