@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TKE Bid Vote</title>
+    <meta charset='utf-8', name='viewport', content='width=device-width, initial-scale=1'/>
+    <link rel='stylesheet', href='/style/style.css'/>
+    <script src='/socket.io/socket.io.js'>
+    </script>
+  </head>
+  <body>
+    <h1>Welcome to TKE Bid Vote! (Admin)</h1>
+    <div id="new_vote">
+      <h3>Start a new vote:</h3>
+      <label>PNM Name: <input type="text" id="vote_name"></label>
+      <br>
+      <br>
+      <a class="button" id="start_vote">Start Vote</a>
+    </div>
+    <div id="voting_in_progress">
+      <p id="name_voting">Vote: </p>
+      <a class="button" id="end_vote">End Vote</a>
+      <a class="button" id="reset_vote">Reset Vote</a>
+      <br>
+      <label>Ban a brother (enter scroll #): <input type="number" id="banned_voter_scroll"></label>
+      <a class="button" id="ban_submit">Ban</a>
+      <p id="yes_count">Yes: </p>
+      <p id="no_count">No: </p>
+      <p id="percent_count">Percent yes: </p>
+      <p id="total_votes">Total votes: </p>
+      <div>
+        <h1 id="history_title">History: </h1>
+        <p id="history"> </p>
+      </div>
+    </div>
+  </body>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'>
+  </script>
+  <script src='scripts/communications_admin.js'>
+  </script>
+  <script src='scripts/buttons_admin.js'>
+  </script>
+</html>
