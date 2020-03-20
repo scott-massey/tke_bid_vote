@@ -53,7 +53,7 @@ var app = http.createServer(function (request, response) {
         }
     });
 
-}).listen(3456);
+}).listen($PORT);
 console.log('Server running');
 
 //Socketio stuff
