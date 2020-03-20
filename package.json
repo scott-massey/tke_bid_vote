@@ -4,7 +4,8 @@
   "description": "TKE Bid Vote",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon start"
+    "test": "nodemon start",
+    "start": "node server.js"
   },
   "author": "Scott Massey",
   "license": "ISC",
