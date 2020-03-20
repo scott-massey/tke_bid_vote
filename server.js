@@ -3,6 +3,8 @@ var fs = require('fs');
 var path = require('path');
 var socketio = require('socket.io');
 
+const PORT = process.env.PORT || 3000;
+
 var app = http.createServer(function (request, response) {
     //console.log('request starting...');
     var filePath = 'assets' + request.url;
@@ -53,7 +55,7 @@ var app = http.createServer(function (request, response) {
         }
     });
 
-}).listen($PORT);
+}).listen(PORT);
 console.log('Server running');
 
 //Socketio stuff
