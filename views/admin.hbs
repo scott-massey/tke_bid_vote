@@ -1,0 +1,46 @@
+<div class="container mt-5">
+  <h1>Admin Voting Dashboard</h1>
+  <div class="container m-3 p-3 main_page" id="new_vote">
+    <h3>Start a new vote:</h3>
+    <form class="p-2">
+      <div class="form-group">
+        <label for="vote_name" class="col-form-label">Vote Name</label>
+        <input type="text" class="form-control w-25" id="vote_name" placeholder="Vote Name"/>
+      </div>
+      <a class="btn btn-primary" id="start_vote">Start Vote</a>
+    </form>
+  </div>
+  <div class="container m-4 p-3 main_page" id="voting_in_progress">
+    <div class="m-2">
+      <h4 id="name_voting">Voting for: </h4>
+      <div class="row">
+        <div class="col-md">
+            <a class="btn btn-info mb-2" id="end_vote">End Voting Period</a>
+            <br>
+            <a class="btn btn-primary mb-2" id="reset_vote">Reset Vote</a>
+          <div class="form-group">
+            <label for="banned_voter_id" class="col-form-label">Ban a voter:</label>
+            <input class="form-control mb-2 w-50" type="number" id="banned_voter_id" placeholder="ID Number">
+            <a class="btn btn-primary" id="ban_submit">Ban</a>
+          </div>
+        </div>
+        <div class="col-md">
+          <p id="yes_count">Yes: </p>
+          <p id="no_count">No: </p>
+          <p id="percent_count">Percent yes: </p>
+          <p id="total_votes">Total votes: </p>
+        </div>
+      </div>
+        <div class="row">
+        <div>
+          <h1 id="history_title">History: </h1>
+          <p id="history"> </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src='scripts/communications_admin.js'>
+</script>
+<script src='scripts/buttons_admin.js'>
+</script>

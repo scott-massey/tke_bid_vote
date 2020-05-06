@@ -3,7 +3,7 @@ $("#start_vote").on("click", function(){
   let vote_name = $("#vote_name").val();
   $("#vote_name").val("");
   if(vote_name == ""){
-    alert("Vote Name field is blank. Please enter a name.");
+    alert("\"Vote Name\" field is blank. Please enter a name.");
   }
   else{
     socketio.emit("start_vote", {name: vote_name});
@@ -13,14 +13,14 @@ $("#start_vote").on("click", function(){
   }
 });
 $("#ban_submit").on("click", function(){
-  let scroll_num = $("#banned_voter_scroll").val();
-  $("#banned_voter_scroll").val(0);
-  if(scroll_num < 1250 || scroll_num > 5000){
+  let id_num = $("#banned_voter_id").val();
+  $("#banned_voter_id").val(0);
+  if(id_num < 1250 || id_num > 5000){
     alert("Invalid number. Please try again.");
   }
   else{
-    socketio.emit('ban_user', {scroll: scroll_num});
-    alert("Frater " + scroll_num + " has been banned from voting.");
+    socketio.emit('ban_user', {id: id_num});
+    alert("Voter " + id_num + " has been banned from voting.");
   }
 });
 $("#reset_vote").on("click", function(){

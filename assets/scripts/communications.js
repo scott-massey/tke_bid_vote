@@ -1,10 +1,10 @@
 var socketio = io.connect();
 let already_started = false;
 let signed_in = false;
-let valid_scroll = new Set();
+let valid_ids = new Set();
 $("#submit_vote").on("click", function (){
   value = parseInt($("input[name='vote']:checked").val());
-  socketio.emit("submit_vote", {vote:value, scroll:$("#scroll_num").val(), name:$("#name").val()}, (code) => {
+  socketio.emit("submit_vote", {vote:value, id:$("#id_num").val(), name:$("#name").val()}, (code) => {
     if(code == 0){
       alert("Thank you for submitting your vote. Please wait while everyone else does the same.");
     }
@@ -25,9 +25,9 @@ $("#submit_vote").on("click", function (){
     $("#waiting").show();
   });
 });
-socketio.on("valid_users", function(valid_scroll_JSON){
+socketio.on("valid_users", function(valid_ids_JSON){
   console.log("Connected.");
-  valid_scroll = new Set(JSON.parse(valid_scroll_JSON));
+  valid_ids = new Set(JSON.parse(valid_ids_JSON));
 });
 socketio.on('start_vote_to_client', function(data){
   console.log("Starting new vote");

@@ -1,0 +1,57 @@
+<div class="container mt-5">
+  <div class="row">
+    <h1 class="text-dark">Welcome to TKE Bid Vote!</h1>
+  </div>
+  <input type='hidden' id='id_num'></input>
+  <input type='hidden' id='name'></input>
+  <div class="row">
+    <div class="col-md-4 mt-3 main_page p-3" id="signon_page">
+      <form>
+        <div class="form-group">
+          <input type='text' class="form-control" id='name_input' placeholder="Name"/>
+        </div>
+        <div class="form-group">
+          <input type='number' class="form-control" id='id_num_input' placeholder="ID Number"/>
+        </div>
+          <a class='btn btn-primary text-white' id='submit_signon'>Begin Voting</a>
+      </form>
+    </div>
+  </div>
+  <div class='container mt-3 main_page p-3' id='waiting'>
+    <h3> You have either just voted, or nothing is being voted on just yet. Please wait.</h3>
+  </div>
+  <div class='container mt-3 main_page p-3' id='voting'>
+    <form>
+      <h3 id='vote_name'>Voting on:</h3>
+      <div class="form-group">
+       <div class="custom-control custom-radio">
+         <input type="radio" id="vote_yes" name="vote" class="custom-control-input" checked="" value=1>
+         <label class="custom-control-label" for="vote_yes">Yes</label>
+       </div>
+       <div class="custom-control custom-radio">
+         <input type="radio" id="vote_no" name="vote" class="custom-control-input" value=0>
+         <label class="custom-control-label" for="vote_no">No</label>
+       </div>
+     </div>
+    <div class="form-group">
+      <input class="btn btn-primary" id="submit_vote" type="button" value="Submit">
+    </div>
+    </form>
+  </div>
+  <div class='container mt-3' id='results'>
+    <h3>Voting has ended.</h3>
+    <p id='yes_count'>Yes: </p>
+    <p id='no_count'>No: </p>
+    <p id='percent_count'>Percent: </p>
+    <p id='total_votes'>Total Votes: </p>
+    <h3>History:</h3>
+    <div id="history_yes">
+    </div>
+    <div id="history_no">
+    </div>
+  </div>
+</div>
+<script src='scripts/communications.js'>
+</script>
+<script src='scripts/buttons.js'>
+</script>

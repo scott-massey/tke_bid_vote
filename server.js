@@ -1,65 +1,43 @@
-var http = require('http');
-var fs = require('fs');
-var path = require('path');
-var socketio = require('socket.io');
+const express = require('express');
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const server = http.Server(app);
+const hbs = require('express-handlebars');
+const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 3000;
 
-var app = http.createServer(function (request, response) {
-    //console.log('request starting...');
-    var filePath = 'assets' + request.url;
-    //console.log(filePath);
-    if (filePath == 'assets/')
-        filePath = 'assets/index.html';
+// Body Parser Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-    var extname = path.extname(filePath);
-    var contentType = 'text/html';
-    switch (extname) {
-        case '.js':
-            contentType = 'text/javascript';
-            break;
-        case '.css':
-            contentType = 'text/css';
-            break;
-        case '.json':
-            contentType = 'application/json';
-            break;
-        case '.png':
-            contentType = 'image/png';
-            break;
-        case '.jpg':
-            contentType = 'image/jpg';
-            break;
-        case '.wav':
-            contentType = 'audio/wav';
-            break;
-    }
+app.set('view engine', 'hbs');
+app.engine('hbs', hbs({
+  layoutsDir: __dirname + '/views/layouts',
+  extname: 'hbs',
+  defaultLayout: 'default_layout'
+}));
 
-    fs.readFile(filePath, function(error, content) {
-        if (error) {
-            if(error.code == 'ENOENT'){
-                fs.readFile('./404.html', function(error, content) {
-                    response.writeHead(200, { 'Content-Type': contentType });
-                    response.end(content, 'utf-8');
-                });
-            }
-            else {
-                response.writeHead(500);
-                response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
-                response.end();
-            }
-        }
-        else {
-            response.writeHead(200, { 'Content-Type': contentType });
-            response.end(content, 'utf-8');
-        }
-    });
+app.get('/', (req, res) => {
+  res.render('index')
+});
+app.get('/admin', (req, res) => {
+  res.render('admin')
+});
+app.get('/voter', (req, res) => {
+  res.render('voter')
+});
+app.get('/favicon.ico', (req, res) => res.status(204));
+app.use(express.static('assets'));
 
-}).listen(PORT);
+server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
 console.log('Server running');
 
 //Socketio stuff
-var io = socketio.listen(app);
 let vote_name = "";
 let voting_in_progress = false;
 let votes = {
@@ -70,9 +48,9 @@ let votes = {
 }
 let banned_voters = new Set();
 let voted_users = new Set();
-let history = "";
-let vote_history = new Map();
-let valid_scroll_arr = [
+//let history = "";
+//let vote_history = new Map();
+let valid_ids_arr = [
   1287, 1296, 1298, 1303, 1309, 1314, 1315,
   1316, 1317, 1318, 1320, 1321, 1322, 1323,
   1324, 1325, 1326, 1327, 1328, 1329, 1330,
@@ -84,37 +62,39 @@ let valid_scroll_arr = [
   1366, 1367, 1368, 1369, 1370, 1371, 1372,
   1373, 1374, 1375
 ];
-let valid_scroll = new Set(valid_scroll_arr);
-let valid_scroll_JSON = JSON.stringify([...valid_scroll]);
-io.sockets.on('connection', function (socket) {
+let valid_ids_set = new Set(valid_ids_arr);
+let valid_ids_JSON = JSON.stringify([...valid_ids_set]);
+io.sockets.on('connection', (socket) => {
   if(voting_in_progress){
     socket.emit('start_vote_to_client', {name:vote_name, already_started:true});
   }
-  socket.on('admin_reload', function(){
+  socket.on('admin_reload', () => {
     if(voting_in_progress){
-      socket.emit('voting_in_progress_admin', {history: history, vote_count: votes});
+      console.log("Admin reloaded, voting still in progress.");
+      //socket.emit('voting_in_progress_admin', {history: history, vote_count: votes, name: vote_name});
+      socket.emit('voting_in_progress_admin', {vote_count: votes, name: vote_name});
     }
     else{
       resetVote();
     }
   });
-  socket.emit('valid_users', valid_scroll_JSON);
-  socket.on('ban_user', function(data){
-    banned_voters.add(data.scroll);
+  socket.emit('valid_users', valid_ids_JSON);
+  socket.on('ban_user', (data) => {
+    banned_voters.add(data.id);
   });
-  socket.on('submit_vote', function (data, cb) {
-    if(voted_users.has(data.scroll)){
+  socket.on('submit_vote', (data, cb) => {
+    if(voted_users.has(data.id)){
       cb(1);
     }
-    else if(banned_voters.has(data.scroll)){
+    else if(banned_voters.has(data.id)){
       cb(2);
     }
     else if(!voting_in_progress){
       cb(3);
     }
     else{
-      voted_users.add(data.scroll);
-      vote_history.set(data.name, data.vote);
+      voted_users.add(data.id);
+      //vote_history.set(data.name, data.vote);
       if(data.vote == 1){
         votes.yes = votes.yes + 1;
       }
@@ -129,9 +109,10 @@ io.sockets.on('connection', function (socket) {
         recent_vote_string = "no";
       }
       votes.vote_count = votes.vote_count + 1;
-      history = history + data.name + " (" + data.scroll + "): " + recent_vote_string + "<br>";
-      vote_history.set(data.name, data.vote);
-      socket.broadcast.emit('vote_to_admin', {history: history, vote_count: votes});
+      //history = history + data.name + " (" + data.id + "): " + recent_vote_string + "<br>";
+      //vote_history.set(data.name, data.vote);
+      //socket.broadcast.emit('vote_to_admin', {history: history, vote_count: votes});
+      socket.broadcast.emit('vote_to_admin', {vote_count: votes});
       cb(0);
     }
     console.log(data);
@@ -139,7 +120,7 @@ io.sockets.on('connection', function (socket) {
   function mapToJson(map) {
     return JSON.stringify([...map]);
   }
-  socket.on("end_vote", function(){
+  socket.on("end_vote", () => {
     voting_in_progress = false;
     let threshold = 0.8;
     let result = false;
@@ -148,19 +129,27 @@ io.sockets.on('connection', function (socket) {
     }
     socket.broadcast.emit('display_results', {votes: votes, history: mapToJson(vote_history), results: result});
   });
-  socket.on('start_vote', function(data){
-    socket.broadcast.emit('start_vote_to_client', {name:data.name, already_started:false});
-    vote_name = data.name;
-    votes.name = data.name;
-    votes.yes = 0;
-    votes.no = 0;
-    votes.vote_count = 0;
-    banned_voters.clear();
-    voted_users.clear();
-    voting_in_progress = true;
-    console.log("Voting for " + data.name + " has begun.");
+  socket.on('start_vote', (data) =>{
+    if(already_started){
+      console.log("Start vote attempted, but previous vote has not finished!");
+      socket.emit('voting_in_progress_admin', {vote_count: votes, name: vote_name});
+    }
+    else{
+      socket.broadcast.emit('start_vote_to_client', {name:data.name, already_started:false});
+      vote_name = data.name;
+      votes.name = data.name;
+      votes.yes = 0;
+      votes.no = 0;
+      votes.vote_count = 0;
+      banned_voters.clear();
+      voted_users.clear();
+      voting_in_progress = true;
+      console.log("Voting for " + data.name + " has begun.");
+    }
   });
-  socket.on('reset_vote', resetVote);
+  socket.on('reset_vote', () => {
+    resetVote();
+  });
   function resetVote(){
     votes.yes = 0;
     votes.no = 0;
@@ -168,9 +157,9 @@ io.sockets.on('connection', function (socket) {
     votes.name = "";
     banned_voters.clear();
     voted_users.clear();
-    vote_history.clear();
+    //vote_history.clear();
     voting_in_progress = false;
-    history = "";
+    //history = "";
     vote_name = "";
     socket.broadcast.emit('reset_vote_user');
   }

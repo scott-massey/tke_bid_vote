@@ -3,12 +3,11 @@ $(function(){
   $("#voting").hide();
   $("#results").hide();
   $("#submit_signon").on("click", function(){
-    let scroll_num = parseInt($("#scroll_num_input").val());
-    if(valid_scroll.has(scroll_num)){
+    let id_num = parseInt($("#id_num_input").val());
+    if(valid_ids.has(id_num)){
       console.log("Signing on...");
-      let scroll_num = $("#scroll_num_input").val();
       let name = $("#name_input").val();
-      $("#scroll_num").val(scroll_num);
+      $("#id_num").val(id_num);
       $("#name").val(name);
       $("#signon_page").hide();
       if(already_started){

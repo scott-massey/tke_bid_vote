@@ -1,26 +1,22 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #a53232;
-  color: #929191;
+  background-color: #AAAAAA;
 }
-input {
-  width:64pt;
-  padding: 6px 10px;
+.main_page {
+  background-color: #969696;
 }
-a.button {
-  display: inline block;
-  background-color: #000000;
-  color: #ffffff;
-  padding: 7px 8px;
-  text-decoration: none;
+
+/* Remove arrows from numeric input */
+/* Taken from w3schools */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-a.button:hover{
-  background-color: #4f4f4f;
-  cursor: pointer;
-}
-input{
-  margin: 8px;
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 #history_yes{
   width: 45%;
