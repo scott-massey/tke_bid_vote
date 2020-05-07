@@ -2,17 +2,28 @@ const express = require('express');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
+const hbs = require('express-handlebars');
+const cookieParse = require('cookie-parser');
+const mysql = require('mysql');
+const bodyParser = require('body-parser');
 
 const app = express();
 const server = http.Server(app);
-const hbs = require('express-handlebars');
 const io = require('socket.io')(server);
 
-const PORT = process.env.PORT || 3000;
+// Passport Config
+require('./config/passport')(passport);
+
+// Cookie Parser
 
 // Body Parser Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+app.use(bodyParser.json());
 
 app.set('view engine', 'hbs');
 app.engine('hbs', hbs({
@@ -21,18 +32,33 @@ app.engine('hbs', hbs({
   defaultLayout: 'default_layout'
 }));
 
+// Passport stuff
+// required for passport
+app.use(session({
+	secret: 'tkebidvote',
+	resave: true,
+	saveUninitialized: true
+ } )); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+// Routes...
+require('./routes/auth_routes.js')(app, passport);
 app.get('/', (req, res) => {
   res.render('index')
 });
 app.get('/admin', (req, res) => {
   res.render('admin')
 });
-app.get('/voter', (req, res) => {
+app.get('/vote', (req, res) => {
   res.render('voter')
 });
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.use(express.static('assets'));
 
+//Find port and listen on that port
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 console.log('Server running');

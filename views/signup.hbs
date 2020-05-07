@@ -1,0 +1,67 @@
+<!-- Code adapted from https://github.com/manjeshpv/node-express-passport-mysql -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="/index">Votely</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/vote">Vote</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin">Admin</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav my-2 my-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Log In</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/signup">Sign Up <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+
+  <div class="col-sm-6 col-sm-offset-3 main_page m-3 p-3">
+
+  	<h1><span class="fa fa-sign-in"></span> Signup</h1>
+
+  	<!-- show any messages that come back with authentication -->
+  	{{#if error }}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{error}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+  	{{/if }}
+
+  	<!-- LOGIN FORM -->
+  	<form action="/signup" method="post">
+  		<div class="form-group">
+  			<label>Username</label>
+  			<input type="text" class="form-control" name="username" id="name_input">
+  		</div>
+  		<div class="form-group">
+  			<label>Password</label>
+  			<input type="password" class="form-control" name="password">
+  		</div>
+
+  		<button type="submit" class="btn btn-info btn-lg" id="submit_signup">Signup</button>
+  	</form>
+
+  	<hr>
+
+  	<p>Already have an account? <a href="/login">Login</a></p>
+  	<p>Or go <a href="/">home</a>.</p>
+
+  </div>
+
+</div>

@@ -1,4 +1,6 @@
 let valid_name = false;
+let username = $("#username").val();
+//console.log("username: " + username);
 $("#voting_in_progress").hide();
 $("#reset_vote").hide();
 $("#start_vote").on("click", function(){
