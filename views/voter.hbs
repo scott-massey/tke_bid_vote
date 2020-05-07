@@ -6,19 +6,23 @@
   <input type='hidden' id='name'></input>
   <div class="row">
     <div class="col-md-4 mt-3 main_page p-3" id="signon_page">
-      <form>
+      <form class="needs-validation" novalidate>
         <div class="form-group">
-          <input type='text' class="form-control" id='name_input' placeholder="Name"/>
-        </div>
-        <div class="form-group">
-          <input type='number' class="form-control" id='id_num_input' placeholder="ID Number"/>
+          <label for="name_input">Name</label>
+          <input type='text' class="form-control" id='name_input' placeholder="Name" required/>
+          <div id="signin_invalid" class="invalid-feedback invalid">
+            Please use a name within 3-20 characters, using only letters and numbers.
+          </div>
         </div>
           <a class='btn btn-primary text-white' id='submit_signon'>Begin Voting</a>
       </form>
     </div>
   </div>
-  <div class='container mt-3 main_page p-3' id='waiting'>
-    <h3> You have either just voted, or nothing is being voted on just yet. Please wait.</h3>
+  <div class='container mt-3 main_page p-3' id='waiting_registration'>
+    <h3>Please wait for the admin to let you into the voting session.</h3>
+  </div>
+  <div class='container mt-3 main_page p-3' id='waiting_in_session'>
+    <h3>You have either just voted, or nothing is being voted on just yet. Please wait.</h3>
   </div>
   <div class='container mt-3 main_page p-3' id='voting'>
     <form>

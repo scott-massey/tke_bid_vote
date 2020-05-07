@@ -5,6 +5,10 @@ body {
   background-color: #969696;
 }
 
+.invalid {
+  color: #b82525;
+}
+
 /* Remove arrows from numeric input */
 /* Taken from w3schools */
 /* Chrome, Safari, Edge, Opera */
@@ -13,7 +17,6 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
