@@ -8,8 +8,25 @@ let LocalStrategy = require("passport-local").Strategy;
 const mysql = require("mysql");
 const bcrypt = require("bcryptjs");
 const dbconfig = require("./database");
-const connection = mysql.createConnection(dbconfig.connection);
+/*const connection = mysql.createPool(dbconfig.connection);
+connection.query("USE " + dbconfig.database);*/
+let connection = mysql.createConnection(dbconfig.connection);
 connection.query("USE " + dbconfig.database);
+function handle_mysql_disconnect(_connection){ // this arg should not be "connDB", otherwise you cannot redefine the global "connDB"
+    _connection.on('error', function(error){
+        if(!error.fatal)  return;
+        if(error.code !== 'PROTOCOL_CONNECTION_LOST')  throw error;
+
+        console.log("re-connecting with mysql server!");
+
+        connection = mysql.createConnection(dbconfig.connection);
+
+        handle_mysql_disconnect(connection);
+        connection.connect();
+    });
+}
+
+handle_mysql_disconnect(connection);
 // expose this function to our app using module.exports
 module.exports = function (passport) {
   // =========================================================================

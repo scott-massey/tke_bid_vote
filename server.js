@@ -48,6 +48,9 @@ require('./routes/auth_routes.js')(app, passport);
 app.get('/', (req, res) => {
   res.render('index')
 });
+app.get('/index', (req, res) => {
+  res.render('index')
+});
 app.get('/admin', (req, res) => {
   res.render('admin')
 });
