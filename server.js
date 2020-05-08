@@ -51,9 +51,6 @@ app.get('/', (req, res) => {
 app.get('/index', (req, res) => {
   res.render('index')
 });
-app.get('/admin', (req, res) => {
-  res.render('admin')
-});
 app.get('/vote', (req, res) => {
   res.render('voter')
 });
@@ -82,7 +79,7 @@ let registered_voters = new Set();
 let voter_id_count = 0;
 let already_started = false;
 let admin_id = "";
-let threshold = 0.8;
+let threshold = 0.5;
 io.sockets.on('connection', (socket) => {
   if(voting_in_progress){
     socket.emit('start_vote_to_client', {name:vote_name, already_started:true});
