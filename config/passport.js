@@ -20,7 +20,7 @@ function handle_mysql_disconnect(_connection){ // this arg should not be "connDB
         console.log("re-connecting with mysql server!");
 
         connection = mysql.createConnection(dbconfig.connection);
-
+        connection.query("USE " + dbconfig.database);
         handle_mysql_disconnect(connection);
         connection.connect();
     });
