@@ -13,8 +13,14 @@ module.exports = function(app, passport) {
 	// LOGIN ===============================
 	// =====================================
 	// show the login form
-	app.get('/login', forwardLogIn, function(req, res) {
-
+	app.get('/login', function(req, res) {
+		if(req.isAuthenticated()){
+			res.render('admin', {
+				username : req.user.username,
+				id : req.user.id
+			});
+			return;
+		}
 		// render the page and pass in any flash data if it exists
 		res.render('login', { error: req.flash('loginMessage') });
 	});
@@ -85,7 +91,7 @@ function isLoggedIn(req, res, next) {
 	res.redirect('/');
 }
 
-function forwardLogIn(req, res, next){
+/*function forwardLogIn(req, res, next){
 	if(req.isAuthenticated()){
 		res.redirect('admin', {
 			username : req.user.username,
@@ -95,4 +101,4 @@ function forwardLogIn(req, res, next){
 
 	return next();
 
-}
+}*/
