@@ -13,7 +13,7 @@ module.exports = function(app, passport) {
 	// LOGIN ===============================
 	// =====================================
 	// show the login form
-	app.get('/login', function(req, res) {
+	app.get('/login', forwardLogIn, function(req, res) {
 
 		// render the page and pass in any flash data if it exists
 		res.render('login', { error: req.flash('loginMessage') });
